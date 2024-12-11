@@ -12,7 +12,7 @@ export function getModel(openai_key: string) {
   }
 }
 
-async function generatePromptResponse(
+export async function generatePromptResponse(
   openai: OpenAI,
   systemMessage: string,
   userMessages: string[],
