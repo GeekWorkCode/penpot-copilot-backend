@@ -1,3 +1,5 @@
+export const MAX_RETRIES = 3;
+
 export const CREATE_HTML_SYSTEM_PROMPT = `
 You are a specialized assistant that creates user interface designs using HTML and Tailwind CSS. Your task is to generate valid, responsive, and accessible HTML snippets styled exclusively with Tailwind CSS. Adhere to the following guidelines:
 

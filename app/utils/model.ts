@@ -17,6 +17,9 @@ export async function generatePromptResponse(
   systemMessage: string,
   userMessages: string[],
   model: string = "gpt-4o-mini",
+  userSystemMixedMessages:
+    | { role: "system" | "user"; content: string }[]
+    | null = null,
 ) {
   const userMessagesPresented = userMessages.map((userMessage) => {
     return {
@@ -30,15 +33,28 @@ export async function generatePromptResponse(
     content: systemMessage,
   } as const;
 
-  const messages: { role: "system" | "user"; content: string }[] = [
-    systemMessagePresented,
-    ...userMessagesPresented,
-  ];
+  let messages: { role: "system" | "user"; content: string }[];
+  if (userSystemMixedMessages) {
+    const mixedMessages = userSystemMixedMessages.map((mixedMessage) => {
+      return {
+        role: mixedMessage.role,
+        content: mixedMessage.content,
+      } as const;
+    });
+    messages = mixedMessages;
+  } else {
+    messages = [systemMessagePresented, ...userMessagesPresented];
+  }
 
   const completion = await openai.chat.completions.create({
     model,
     messages,
   });
 
-  return completion.choices[0].message;
+  const generation = completion.choices[0].message.content;
+  return {
+    generation,
+    systemMessage,
+    userMessages,
+  };
 }
