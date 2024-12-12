@@ -5,6 +5,7 @@ import { generatePromptResponse, getModel } from "./utils/model";
 import {
   CREATE_HTML_SYSTEM_PROMPT,
   MAX_RETRIES,
+  MAX_USER_TRIALS,
   OG_QUERY_PROMPT,
 } from "./utils/prompts";
 import OpenAI from "openai";
@@ -36,6 +37,7 @@ app.post(`/og_response`, async (req, res) => {
     let model: OpenAI;
     if (!openai_key) {
       const userTrials = checkUserTrials(userId);
+      await updateUserTrials(userId);
       if (!userTrials) {
         const response: TOG_Response = {
           success: false,
@@ -147,6 +149,7 @@ app.post(`/create_html`, async (req, res) => {
     let model: OpenAI;
     if (!openai_key) {
       const userTrials = checkUserTrials(userId);
+      await updateUserTrials(userId);
       if (!userTrials) {
         const response: TOG_Response = {
           success: false,
@@ -203,6 +206,53 @@ app.listen(3000, () =>
 🚀 Server ready at: http://localhost:3000
 `),
 );
-function checkUserTrials(userId: any): boolean {
-  throw new Error("Function not implemented.");
+async function checkUserTrials(userId: any): Promise<boolean> {
+  try {
+    let userDetails;
+    userDetails = await prisma.user.findFirst({
+      where: {
+        userId,
+      },
+    });
+    if (!userDetails) {
+      userDetails = await prisma.user.create({
+        data: {
+          userId,
+          trials: 0,
+        },
+      });
+    }
+    return userDetails.trials <= MAX_USER_TRIALS;
+  } catch (error) {
+    return false;
+  }
+}
+
+async function updateUserTrials(userId: string) {
+  try {
+    let userDetails;
+    userDetails = await prisma.user.findFirst({
+      where: {
+        userId,
+      },
+    });
+    if (!userDetails) {
+      userDetails = await prisma.user.create({
+        data: {
+          userId,
+          trials: 0,
+        },
+      });
+    }
+    await prisma.user.update({
+      where: {
+        id: userDetails.id,
+      },
+      data: {
+        trials: userDetails.trials + 1,
+      },
+    });
+  } catch (error) {
+    throw new Error("Failed to update user free trials");
+  }
 }
