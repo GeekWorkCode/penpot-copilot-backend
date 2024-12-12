@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 import cors from "cors";
-import { getDropboxToken } from "./utils/dropbox";
 
 const prisma = new PrismaClient();
 const app = express();
