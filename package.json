@@ -4,7 +4,7 @@
   "description": "REST API for the activity tracker",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npm install & tsc",
+    "build": "npm install",
     "start": "node dist/index.js",
     "dev": "nodemon app/index.ts"
   },
