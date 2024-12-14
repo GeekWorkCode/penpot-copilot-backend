@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateHTML = validateHTML;
-exports.cleanHTML = cleanHTML;
+exports.cleanHTML = exports.validateHTML = void 0;
 const html_validate_1 = require("html-validate");
 const htmlvalidate = new html_validate_1.HtmlValidate({
     rules: {
@@ -130,6 +129,7 @@ function validateHTML(testHtml) {
         };
     }
 }
+exports.validateHTML = validateHTML;
 function cleanHTML(html) {
     if (html.includes("```html")) {
         const afterFirstSplit = html.split("```html")[1]; // Gets everything after "```html"
@@ -140,4 +140,5 @@ function cleanHTML(html) {
         return html;
     }
 }
+exports.cleanHTML = cleanHTML;
 //# sourceMappingURL=validate-html.js.map

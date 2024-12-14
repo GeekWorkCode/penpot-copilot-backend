@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateCssFromHtml = generateCssFromHtml;
+exports.generateCssFromHtml = void 0;
 const postcss_1 = __importDefault(require("postcss"));
 const tailwindcss_1 = __importDefault(require("tailwindcss"));
 const fs_1 = __importDefault(require("fs"));
@@ -45,6 +45,7 @@ function generateCssFromHtml(htmlContent) {
         }
     });
 }
+exports.generateCssFromHtml = generateCssFromHtml;
 function testGenerate() {
     return __awaiter(this, void 0, void 0, function* () {
         const testHtml = `

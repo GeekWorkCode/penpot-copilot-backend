@@ -12,8 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getModel = getModel;
-exports.generatePromptResponse = generatePromptResponse;
+exports.generatePromptResponse = exports.getModel = void 0;
 const openai_1 = __importDefault(require("openai"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -29,8 +28,9 @@ function getModel(openai_key) {
         });
     }
 }
-function generatePromptResponse(openai_2, systemMessage_1, userMessages_1) {
-    return __awaiter(this, arguments, void 0, function* (openai, systemMessage, userMessages, model = "gpt-4o-mini", userSystemMixedMessages = null) {
+exports.getModel = getModel;
+function generatePromptResponse(openai, systemMessage, userMessages, model = "gpt-4o-mini", userSystemMixedMessages = null) {
+    return __awaiter(this, void 0, void 0, function* () {
         const userMessagesPresented = userMessages.map((userMessage) => {
             return {
                 role: "user",
@@ -66,4 +66,5 @@ function generatePromptResponse(openai_2, systemMessage_1, userMessages_1) {
         };
     });
 }
+exports.generatePromptResponse = generatePromptResponse;
 //# sourceMappingURL=model.js.map

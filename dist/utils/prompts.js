@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RAG_SYSTEM_PROMPT = exports.OG_QUERY_PROMPT = exports.CREATE_HTML_SYSTEM_PROMPT = exports.MAX_USER_TRIALS = exports.MAX_RETRIES = void 0;
-exports.generateRAG_USER_MESSAGE = generateRAG_USER_MESSAGE;
+exports.generateRAG_USER_MESSAGE = exports.RAG_SYSTEM_PROMPT = exports.OG_QUERY_PROMPT = exports.CREATE_HTML_SYSTEM_PROMPT = exports.MAX_USER_TRIALS = exports.MAX_RETRIES = void 0;
 exports.MAX_RETRIES = 3;
 exports.MAX_USER_TRIALS = 100;
 exports.CREATE_HTML_SYSTEM_PROMPT = `
@@ -77,4 +76,5 @@ Using this context, answer the user’s question as precisely as possible. Ensur
 (*Provide a precise, context-aware response based on the retrieved data.*)
 `;
 }
+exports.generateRAG_USER_MESSAGE = generateRAG_USER_MESSAGE;
 //# sourceMappingURL=prompts.js.map

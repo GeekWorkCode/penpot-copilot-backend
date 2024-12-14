@@ -12,8 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkUserTrials = checkUserTrials;
-exports.updateUserTrials = updateUserTrials;
+exports.updateUserTrials = exports.checkUserTrials = void 0;
 const client_1 = require("@prisma/client");
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
@@ -400,6 +399,7 @@ function checkUserTrials(userId) {
         }
     });
 }
+exports.checkUserTrials = checkUserTrials;
 function updateUserTrials(userId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -432,4 +432,5 @@ function updateUserTrials(userId) {
         }
     });
 }
+exports.updateUserTrials = updateUserTrials;
 //# sourceMappingURL=index.js.map
