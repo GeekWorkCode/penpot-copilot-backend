@@ -129,3 +129,15 @@ export function validateHTML(testHtml: string): TValidateHTML {
     };
   }
 }
+
+export function cleanHTML(html: string) {
+  if (html.includes("```html")) {
+    const afterFirstSplit = html.split("```html")[1]; // Gets everything after "```html"
+    const cleaned = afterFirstSplit.split("```")[0]; // Gets everything before "```"
+    return cleaned.trim(); // Trim to remove any leading/trailing newlines or spaces
+  } else {
+    return html;
+  }
+}
+
+export function generateCssForHtml(html: string) {}

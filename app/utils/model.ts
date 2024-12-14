@@ -1,6 +1,9 @@
 import OpenAI from "openai";
+import dotenv from "dotenv";
+dotenv.config();
 
 export function getModel(openai_key: string) {
+  console.log("Environmental key is: ", process.env.OPENAI_KEY);
   if (openai_key == "self") {
     return new OpenAI({
       apiKey: process.env.OPENAI_KEY,
