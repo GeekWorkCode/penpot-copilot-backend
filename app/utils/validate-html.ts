@@ -139,5 +139,3 @@ export function cleanHTML(html: string) {
     return html;
   }
 }
-
-export function generateCssForHtml(html: string) {}

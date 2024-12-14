@@ -12,6 +12,7 @@ import OpenAI from "openai";
 import { cleanHTML, validateHTML } from "./utils/validate-html";
 import dotenv from "dotenv";
 import { randomUUID } from "crypto";
+import { generateCssFromHtml } from "./utils/css";
 
 dotenv.config();
 const prisma = new PrismaClient();
@@ -226,6 +227,38 @@ app.post(`/poll_bucket`, async (req, res) => {
     return res.status(505).json(response);
   }
 });
+type TFetchWebpage = {
+  bucketId: string | null;
+  html?: string | null;
+  css?: string | null;
+  error: string | null;
+};
+app.post(`/fetch_webpage`, async (req, res) => {
+  try {
+    const { bucketId } = req.body;
+    const bucket = await prisma.treeBucket.findFirst({
+      where: {
+        bucketId: bucketId,
+      },
+    });
+    if (!bucket) throw new Error("Failed to create bucket");
+    const response: TFetchWebpage = {
+      bucketId: bucketId,
+      html: bucket.html,
+      css: bucket.css,
+      error: null,
+    };
+    return res.status(200).json(response);
+  } catch (error) {
+    const catchError = error as Error;
+    const response: TFetchWebpage = {
+      bucketId: null,
+      error: catchError.message,
+    };
+    return res.status(505).json(response);
+  }
+});
+
 type TCreateBucket = {
   success: boolean;
   bucketId: string | null;
@@ -234,9 +267,13 @@ type TCreateBucket = {
 app.post(`/create_bucket`, async (req, res) => {
   try {
     const bucketId = randomUUID();
+    const { html, css } = req.body;
+    if (!html || !css) throw new Error("Missing html or css");
     const bucket = await prisma.treeBucket.create({
       data: {
         bucketId: bucketId,
+        html: html,
+        css: css,
       },
     });
     if (!bucket) throw new Error("Failed to create bucket");
@@ -259,6 +296,7 @@ app.post(`/create_bucket`, async (req, res) => {
 type TCreateHTMLResponse = {
   success: boolean;
   html: string | null;
+  css?: string | null;
   error: string | null;
 };
 app.post(`/create_html`, async (req, res) => {
@@ -290,15 +328,20 @@ app.post(`/create_html`, async (req, res) => {
       const response: TCreateHTMLResponse = {
         success: false,
         html: null,
+        css: null,
         error: "Error generating prompt response",
       };
       return res.status(505).json(response);
     }
     const { html, errors, isValid } = validateHTML(cleanHTML(tailwindHtml));
     if (isValid && !errors && html) {
+      const cssResponse = await generateCssFromHtml(html);
+      if (cssResponse.error) throw Error(cssResponse.error);
+      if (!cssResponse.css) throw Error("Error generating CSS");
       const response: TCreateHTMLResponse = {
         success: true,
         html: html,
+        css: cssResponse.css,
         error: null,
       };
       return res.status(200).json(response);
