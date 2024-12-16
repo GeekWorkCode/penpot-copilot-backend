@@ -10,7 +10,7 @@ Follow these steps to set up and run the Penpot Copilot REST API on your local m
 2. **Clone the Repository**  
    - Clone this repository to your local machine using:  
      ```bash  
-     git clone <repository-url>  
+     git clone https://github.com/CijeTheCreator/penpot-copilot-backend
      ```  
 
 3. **Configure Environment Variables**  
