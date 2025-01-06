@@ -6,6 +6,7 @@ export function getModel(openai_key: string) {
   if (openai_key == "self") {
     return new OpenAI({
       apiKey: process.env.OPENAI_KEY,
+      baseURL: process.env.OPENAI_BASE_URL,
     });
   } else {
     return new OpenAI({
